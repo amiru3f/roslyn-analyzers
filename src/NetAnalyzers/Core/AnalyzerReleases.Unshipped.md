@@ -19,10 +19,10 @@ CA1862 | Performance | Info | RecommendCaseInsensitiveStringComparison, [Documen
 CA1863 | Performance | Hidden | UseCompositeFormatAnalyzer, [Documentation](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1862)
 CA1864 | Performance | Info | PreferDictionaryTryAddValueOverGuardedAddAnalyzer, [Documentation](https://docs.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1864)
 CA2021 | Reliability | Warning | DoNotCallEnumerableCastOrOfTypeWithIncompatibleTypesAnalyzer, [Documentation](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2021)
+CA2262 | Usage | Info | ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly, [Documentation](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2262)
 
 ### Removed Rules
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 CA2109 | Security | Disabled | ReviewVisibleEventHandlersAnalyzer, [Documentation](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2109)
-CA2262 | Usage | Enabled | ReviewVisibleEventHandlersAnalyzer, [Documentation](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2109)

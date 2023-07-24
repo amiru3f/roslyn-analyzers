@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using Analyzer.Utilities;
 using Analyzer.Utilities.Extensions;
@@ -48,12 +49,12 @@ namespace Microsoft.NetCore.Analyzers.Usage
                         return;
                     }
 
-                    if (!propertyAssignment.Value.ConstantValue.HasValue)
+                    if (propertyAssignment.Value is null || !propertyAssignment.Value.ConstantValue.HasValue || propertyAssignment.Value.ConstantValue.Value is not int)
                     {
                         return;
                     }
 
-                    int propertyValue = System.Convert.ToInt32(propertyAssignment.Value.ConstantValue.Value);
+                    int propertyValue = Convert.ToInt32(propertyAssignment.Value.ConstantValue.Value, System.Globalization.CultureInfo.CurrentCulture);
 
                     if (propertyValue > MaximumAlertLimit)
                     {

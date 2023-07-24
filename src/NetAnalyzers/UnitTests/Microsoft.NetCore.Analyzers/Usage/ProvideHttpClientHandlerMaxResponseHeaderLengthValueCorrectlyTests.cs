@@ -8,10 +8,10 @@ using VerifyCS = Test.Utilities.CSharpCodeFixVerifier<
 
 namespace Microsoft.NetCore.Analyzers.Usage.UnitTests
 {
-    public class HttpResponseHeaderTestTests
+    public class ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectlyTests
     {
         [Fact]
-        public async Task Test_Amir()
+        public async Task CA2262_ProvideCorrectValueFor_HttpClientHandlerMaxResponseHeader_DiagnosticAsync()
         {
             await VerifyCS.VerifyAnalyzerAsync(@"
                 using System;
@@ -26,23 +26,25 @@ namespace Microsoft.NetCore.Analyzers.Usage.UnitTests
 
                         HttpClientHandler handler3 = new HttpClientHandler()
                         {
-                            MaxResponseHeadersLength = GetValue() // Do you really mean 16 MB?
+                            MaxResponseHeadersLength = GetValue()
                         };
 
-                        // HttpClientHandler handler = new HttpClientHandler()
-                        // {
-                        //     MaxResponseHeadersLength = val // Do you really mean 16 MB?
-                        // };
+                        HttpClientHandler handler = new HttpClientHandler()
+                        {
+                            {|#0:MaxResponseHeadersLength = val|}
+                        };
 
                         HttpClientHandler handler2 = new HttpClientHandler()
                         {
-                            MaxResponseHeadersLength = 1414 // Do you really mean 16 MB?
+                            {|#1:MaxResponseHeadersLength = 1414|}
                         };
                     }
                 }
                         
                 ",
-            VerifyCS.Diagnostic(ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly.RuleId));
+            VerifyCS.Diagnostic(ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly.RuleId).WithLocation(0).WithArguments(242424),
+            VerifyCS.Diagnostic(ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly.RuleId).WithLocation(1).WithArguments(1414)
+            );
         }
     }
 }
