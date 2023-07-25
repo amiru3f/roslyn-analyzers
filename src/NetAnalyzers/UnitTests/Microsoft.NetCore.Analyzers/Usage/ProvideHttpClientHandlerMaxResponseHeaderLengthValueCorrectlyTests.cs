@@ -6,6 +6,9 @@ using VerifyCS = Test.Utilities.CSharpCodeFixVerifier<
     Microsoft.NetCore.Analyzers.Usage.ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly,
     Microsoft.CodeAnalysis.Testing.EmptyCodeFixProvider>;
 
+using VerifyVB = Test.Utilities.VisualBasicCodeFixVerifier<
+    Microsoft.NetCore.Analyzers.Usage.ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly,
+    Microsoft.CodeAnalysis.Testing.EmptyCodeFixProvider>;
 namespace Microsoft.NetCore.Analyzers.Usage.UnitTests
 {
     public class ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectlyTests
@@ -44,6 +47,25 @@ namespace Microsoft.NetCore.Analyzers.Usage.UnitTests
                 ",
             VerifyCS.Diagnostic(ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly.RuleId).WithLocation(0).WithArguments(242424),
             VerifyCS.Diagnostic(ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly.RuleId).WithLocation(1).WithArguments(1414)
+            );
+
+            await VerifyVB.VerifyAnalyzerAsync(@"
+                Imports System.Net.Http
+                
+                Public Class MainClass
+                    Public Shared Sub Main()
+                        Dim httpClientHandler As New HttpClientHandler()
+
+                        {|#0:httpClientHandler.MaxResponseHeadersLength = 65536|}
+
+                        Dim httpClient As New HttpClient(httpClientHandler)
+
+                        httpClient.Dispose()
+                        httpClientHandler.Dispose()
+                    End Sub
+                End Class
+                ",
+            VerifyVB.Diagnostic(ProvideHttpClientHandlerMaxResponseHeaderLengthValueCorrectly.RuleId).WithLocation(0).WithArguments(65536)
             );
         }
     }
