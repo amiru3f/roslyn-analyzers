@@ -49,17 +49,16 @@ namespace Microsoft.NetCore.Analyzers.Usage
                         return;
                     }
 
-                    if (propertyAssignment.Value is null || !propertyAssignment.Value.ConstantValue.HasValue || propertyAssignment.Value.ConstantValue.Value is not int)
+                    if (propertyAssignment.Value is null || !propertyAssignment.Value.ConstantValue.HasValue || propertyAssignment.Value.ConstantValue.Value is not int propertyValue)
                     {
                         return;
                     }
-
-                    int propertyValue = Convert.ToInt32(propertyAssignment.Value.ConstantValue.Value, System.Globalization.CultureInfo.CurrentCulture);
 
                     if (propertyValue > MaximumAlertLimit)
                     {
                         context.ReportDiagnostic(context.Operation.CreateDiagnostic(EnsureMaxResponseHeaderLengthRule, propertyValue));
                     }
+                    
                 }, OperationKind.SimpleAssignment);
             });
         }
